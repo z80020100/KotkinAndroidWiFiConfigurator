@@ -20,15 +20,19 @@ class WifiSuggestionReceiver : BroadcastReceiver() {
             return
         }
 
-        val suggestion = WifiNetworkSuggestion.Builder()
+        fun base() = WifiNetworkSuggestion.Builder()
             .setSsid(ssid)
             .setIsHiddenSsid(hidden)
-            .apply { if (!password.isNullOrEmpty()) setWpa2Passphrase(password) }
-            .build()
+        val suggestions = if (password.isNullOrEmpty()) {
+            listOf(base().build())
+        } else {
+            listOf(
+                base().setWpa2Passphrase(password).build(),
+                base().setWpa3Passphrase(password).build(),
+            )
+        }
 
         val wifiManager = context.getSystemService<WifiManager>()!!
-
-        val suggestions = listOf(suggestion)
         wifiManager.removeNetworkSuggestions(suggestions)
         val status = wifiManager.addNetworkSuggestions(suggestions)
 
