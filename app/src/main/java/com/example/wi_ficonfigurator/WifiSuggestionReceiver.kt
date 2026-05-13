@@ -24,7 +24,10 @@ class WifiSuggestionReceiver : BroadcastReceiver() {
             .setSsid(ssid)
             .setIsHiddenSsid(hidden)
         val suggestions = if (password.isNullOrEmpty()) {
-            listOf(base().build())
+            listOf(
+                base().build(),
+                base().setIsEnhancedOpen(true).build(),
+            )
         } else {
             listOf(
                 base().setWpa2Passphrase(password).build(),
