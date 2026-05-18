@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-18T11:14:01Z",
+  "files": [
+    {
+      "id": "com.example.wi_ficonfigurator",
+      "name": "Wi-Fi Configurator",
+      "version_name": "1.0.0",
+      "version_code": 10000,
+      "filename": "wifi-configurator-1.0.0.apk",
+      "sha256": "08847db2d8526d7dc513a83a8b0548223634c936be75c0c6e41a6651414b2ce4",
+      "size": 11386601,
+      "url": "https://github.com/z80020100/KotkinAndroidWiFiConfigurator/releases/download/v1.0.0/wifi-configurator-1.0.0.apk"
+    }
+  ]
+}
