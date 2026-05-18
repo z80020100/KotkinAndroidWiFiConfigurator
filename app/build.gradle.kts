@@ -15,6 +15,12 @@ val hasReleaseSigning =
         !releaseStorePassword.isNullOrEmpty() &&
         !releaseKeyPassword.isNullOrEmpty()
 
+// versionCode is derived from versionName as MAJOR*10000 + MINOR*100 + PATCH.
+// Each segment must stay in 0..99.
+val appVersionName = "1.0.0"
+val (major, minor, patch) = appVersionName.split(".").map(String::toInt)
+val appVersionCode = major * 10000 + minor * 100 + patch
+
 android {
     namespace = "com.example.wi_ficonfigurator"
     compileSdk {
@@ -27,8 +33,8 @@ android {
         applicationId = "com.example.wi_ficonfigurator"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
