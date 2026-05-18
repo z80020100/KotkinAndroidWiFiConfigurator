@@ -2,6 +2,19 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+// Signing config is activated only when all four env vars are present.
+// Without them, assembleRelease still produces an unsigned APK (e.g. for
+// local smoke tests).
+val releaseStoreFile: String? = System.getenv("RELEASE_STORE_FILE")
+val releaseKeyAlias: String? = System.getenv("RELEASE_KEY_ALIAS")
+val releaseStorePassword: String? = System.getenv("RELEASE_STORE_PASSWORD")
+val releaseKeyPassword: String? = System.getenv("RELEASE_KEY_PASSWORD")
+val hasReleaseSigning =
+    !releaseStoreFile.isNullOrEmpty() &&
+        !releaseKeyAlias.isNullOrEmpty() &&
+        !releaseStorePassword.isNullOrEmpty() &&
+        !releaseKeyPassword.isNullOrEmpty()
+
 android {
     namespace = "com.example.wi_ficonfigurator"
     compileSdk {
@@ -20,8 +33,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(releaseStoreFile!!)
+                keyAlias = releaseKeyAlias
+                storePassword = releaseStorePassword
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
