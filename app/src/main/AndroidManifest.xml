@@ -20,6 +20,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="com.example.wi_ficonfigurator.action.SUGGEST_WIFI" />
+                <action android:name="com.example.wi_ficonfigurator.action.CLEAR_WIFI" />
             </intent-filter>
         </receiver>
     </application>
