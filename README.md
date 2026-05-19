@@ -38,6 +38,17 @@ adb logcat -s WifiSuggestionReceiver
 
 A successful run prints `addNetworkSuggestions ssid='...' hidden=... status=SUCCESS`. After the suggestion is added the system shows an approval prompt; once approved the device associates automatically when the network is in range.
 
+### Clear all suggestions
+
+Remove every suggestion previously registered by this app (no extras):
+
+```bash
+adb shell am broadcast \
+  -a com.example.wi_ficonfigurator.action.CLEAR_WIFI
+```
+
+A successful run prints `removeNetworkSuggestions(all) status=SUCCESS`. If the device is currently connected to a network registered through this app the connection will be dropped.
+
 ## Behavior
 
 Two `WifiNetworkSuggestion` entries are registered per call to cover security transition modes without the caller knowing the AP's exact configuration:
@@ -53,4 +64,4 @@ Different `WifiNetworkSuggestion` security types are stored as distinct entries 
 
 - **WEP** is unsupported — Android's `WifiNetworkSuggestion.Builder` provides no WEP setter.
 - **WPA2-Enterprise** and **WPA3-Enterprise** networks and **Passpoint** (Hotspot 2.0) are out of scope; their credential schemas do not fit intent extras.
-- The receiver is exported so adb broadcasts can reach it; any installed app can also broadcast `SUGGEST_WIFI`. Suggested networks still require system approval before any auto-connect; the worst case for a rogue broadcast is suggestion clutter rather than auto-connect.
+- The receiver is exported so adb broadcasts can reach it; any installed app can also broadcast `SUGGEST_WIFI` or `CLEAR_WIFI`. Suggested networks still require system approval before any auto-connect; a rogue `SUGGEST_WIFI` only adds suggestion clutter. A rogue `CLEAR_WIFI` removes every suggestion this app has registered and disconnects the device if it is currently associated through one of them.
