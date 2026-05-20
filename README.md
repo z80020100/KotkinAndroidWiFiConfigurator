@@ -49,6 +49,17 @@ adb shell am broadcast \
 
 A successful run prints `removeNetworkSuggestions(all) status=SUCCESS`. If the device is currently connected to a network registered through this app the connection will be dropped.
 
+### List registered suggestions
+
+Print every suggestion currently registered by this app to logcat (no extras; requires Android 11 / API 30+):
+
+```bash
+adb shell am broadcast \
+  -a com.example.wi_ficonfigurator.action.LIST_WIFI
+```
+
+Output looks like `networkSuggestions count=N` followed by one `networkSuggestions[i] ssid='...' hidden=...` line per entry. Only this app's still-registered suggestions are listed and passwords are never returned by the platform. Each `SUGGEST_WIFI` call registers two entries (see [Behavior](#behavior)) so `N` is twice the number of suggested SSIDs and each SSID appears on two consecutive lines.
+
 ## Behavior
 
 Two `WifiNetworkSuggestion` entries are registered per call to cover security transition modes without the caller knowing the AP's exact configuration:
@@ -64,4 +75,4 @@ Different `WifiNetworkSuggestion` security types are stored as distinct entries 
 
 - **WEP** is unsupported — Android's `WifiNetworkSuggestion.Builder` provides no WEP setter.
 - **WPA2-Enterprise** and **WPA3-Enterprise** networks and **Passpoint** (Hotspot 2.0) are out of scope; their credential schemas do not fit intent extras.
-- The receiver is exported so adb broadcasts can reach it; any installed app can also broadcast `SUGGEST_WIFI` or `CLEAR_WIFI`. Suggested networks still require system approval before any auto-connect; a rogue `SUGGEST_WIFI` only adds suggestion clutter. A rogue `CLEAR_WIFI` removes every suggestion this app has registered and disconnects the device if it is currently associated through one of them.
+- The receiver is exported so adb broadcasts can reach it; any installed app can also broadcast `SUGGEST_WIFI`, `CLEAR_WIFI` or `LIST_WIFI`. Suggested networks still require system approval before any auto-connect; a rogue `SUGGEST_WIFI` only adds suggestion clutter. A rogue `CLEAR_WIFI` removes every suggestion this app has registered and disconnects the device if it is currently associated through one of them. A rogue `LIST_WIFI` only writes this app's registered SSIDs to logcat which is readable by system tooling but not by ordinary third-party apps.
