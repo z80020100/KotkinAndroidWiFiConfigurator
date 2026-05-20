@@ -15,6 +15,7 @@ class WifiSuggestionReceiver : BroadcastReceiver() {
         when (intent.action) {
             ACTION_SUGGEST_WIFI -> handleSuggest(intent, wifiManager)
             ACTION_CLEAR_WIFI -> handleClear(wifiManager)
+            ACTION_LIST_WIFI -> handleList(wifiManager)
             else -> Log.w(TAG, "Unknown action: ${intent.action}")
         }
     }
@@ -54,6 +55,14 @@ class WifiSuggestionReceiver : BroadcastReceiver() {
         Log.i(TAG, "removeNetworkSuggestions(all) status=${statusName(status)}")
     }
 
+    private fun handleList(wifiManager: WifiManager) {
+        val suggestions = wifiManager.networkSuggestions
+        Log.i(TAG, "networkSuggestions count=${suggestions.size}")
+        suggestions.forEachIndexed { index, suggestion ->
+            Log.i(TAG, "networkSuggestions[$index] ssid='${suggestion.ssid}' hidden=${suggestion.isHiddenSsid}")
+        }
+    }
+
     private fun statusName(status: Int): String = when (status) {
         WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS -> "SUCCESS"
         WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_INTERNAL -> "ERROR_INTERNAL"
@@ -69,5 +78,6 @@ class WifiSuggestionReceiver : BroadcastReceiver() {
         private const val TAG = "WifiSuggestionReceiver"
         private const val ACTION_SUGGEST_WIFI = "com.example.wi_ficonfigurator.action.SUGGEST_WIFI"
         private const val ACTION_CLEAR_WIFI = "com.example.wi_ficonfigurator.action.CLEAR_WIFI"
+        private const val ACTION_LIST_WIFI = "com.example.wi_ficonfigurator.action.LIST_WIFI"
     }
 }
