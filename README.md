@@ -4,7 +4,7 @@ A Kotlin Android dev tool for registering Wi-Fi network suggestions via adb broa
 
 ## Requirements
 
-- Android 10 (API 29) or later
+- Android 11 (API 30) or later
 
 ## Build and install
 
@@ -51,7 +51,7 @@ A successful run prints `removeNetworkSuggestions(all) status=SUCCESS`. If the d
 
 ### List registered suggestions
 
-Print every suggestion currently registered by this app to logcat (no extras; requires Android 11 / API 30+):
+Print every suggestion currently registered by this app to logcat (no extras):
 
 ```bash
 adb shell am broadcast \

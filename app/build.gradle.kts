@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.wi_ficonfigurator"
-        minSdk = 29
+        minSdk = 30
         targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersionName

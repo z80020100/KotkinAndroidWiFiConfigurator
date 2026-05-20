@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiNetworkSuggestion
-import android.os.Build
 import android.util.Log
 import androidx.core.content.getSystemService
 
@@ -57,10 +56,6 @@ class WifiSuggestionReceiver : BroadcastReceiver() {
     }
 
     private fun handleList(wifiManager: WifiManager) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            Log.w(TAG, "getNetworkSuggestions requires Android 11 (API 30)+")
-            return
-        }
         val suggestions = wifiManager.networkSuggestions
         Log.i(TAG, "networkSuggestions count=${suggestions.size}")
         suggestions.forEachIndexed { index, suggestion ->
