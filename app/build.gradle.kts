@@ -17,7 +17,7 @@ val hasReleaseSigning =
 
 // versionCode is derived from versionName as MAJOR*10000 + MINOR*100 + PATCH.
 // Each segment must stay in 0..99.
-val appVersionName = "1.0.0"
+val appVersionName = "1.1.0"
 val (major, minor, patch) = appVersionName.split(".").map(String::toInt)
 val appVersionCode = major * 10000 + minor * 100 + patch
 
